@@ -7,18 +7,14 @@ label {
     display: block;
     text-align: center;
 }
-input[type=radio] {
-    border: 0px;
-    width: 0.5em;
-    height: 0.5em;
-}
+
 .stroke {
   fill: #111;
   stroke: #777;
   stroke-width: 1px;
 }
 .fill {
-  fill: #111;
+  fill: #000;
 }
 .graticule {
   fill: none;

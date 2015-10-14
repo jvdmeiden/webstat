@@ -38,8 +38,10 @@
       </div>
     </form><br/><br/>
     <div>
-      <input type="range" min="1990" max="2015" step="1" name="sld" value="2014" onchange="sliderValue(this.value)"/>
-      <span id="slider" style="font-weight:bold;">Year: 2014</span><br/>
+      <button onclick="sliderDown()" style="color:#111">&lt</button>	
+      <button onclick="sliderUp()" style="color:#111">&gt</button>	  
+      <input type="range" min="1987" max="2014" step="1" id="slider" value="2014" onchange="displaySliderValue()"/>
+      <span id="sliderVal" style="font-weight:bold;">Year: 2014</span><br/>
     </div>
   </div>
   <div class="col-md-4"ass="data">
@@ -68,9 +70,20 @@ function handleRadio(value){
   updateMap();
 }
 
-function sliderValue(value)
+function sliderUp() {
+    document.getElementById("slider").stepUp(1);
+    displaySliderValue();
+}
+
+function sliderDown() {
+    document.getElementById("slider").stepDown(1);
+    displaySliderValue();
+}
+
+function displaySliderValue()
 {
-  document.getElementById("slider").innerHTML="Year: "+value;
+  var value=document.getElementById("slider").value;
+  document.getElementById("sliderVal").innerHTML="Year: "+value;
   year=value;
   updateMap();
 }
@@ -176,6 +189,7 @@ function getColor(d) {
 function updateMap(){
   svg.selectAll(".country")
     .style("fill", function(d) { return getColor(d.id) });
+  tipOff(null);
 }
 
 function tipOn(evt){
@@ -186,17 +200,17 @@ function tipOn(evt){
 //      d3.select(".data_size").text(inet[id].Size);
 //      d3.select(".data_pop").text(inet[id].Population);
 //       d3.select(".data_users").text(inet[id].InternetUsers);
-      d3.select(".data_pen").text(inet[alfa][year.toString()]);
+      d3.select(".data_pen").text(inet[alfa][year.toString()].toFixed(2));
 //       d3.select(".data_date").text(inet[id].DataDate);
     }
 }
 
 function tipOff(evt){
-  d3.select(".data_name").text("");
+  d3.select(".data_name").text("World");
   d3.select(".data_size").text("");
   d3.select(".data_pop").text("");
   d3.select(".data_users").text("");
-  d3.select(".data_pen").text("");
+  d3.select(".data_pen").text(inet["WLD"][year.toString()].toFixed(2));
   d3.select(".data_date").text("");
 }
 
