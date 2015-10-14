@@ -1,5 +1,7 @@
 # Visualized statistics on the internet
 
+[See result](http://jvdm.info/webstats/index.html)
+
 ## Background
 Interested in internet statistics and really wanting to learn d3.js... 
 For more background see:  http://janvandermeiden.blogspot.nl/
