@@ -40,7 +40,7 @@
     <div>
       <button onclick="sliderDown()" style="color:#111">&lt</button>	
       <button onclick="sliderUp()" style="color:#111">&gt</button>	  
-      <input type="range" min="1987" max="2014" step="1" id="slider" value="2014" onchange="displaySliderValue()"/>
+      <input type="range" min="1988" max="2014" step="1" id="slider" value="2014" onchange="displaySliderValue()"/>
       <span id="sliderVal" style="font-weight:bold;">Year: 2014</span><br/>
     </div>
   </div>
@@ -169,16 +169,25 @@ svg.insert("path", ".graticule")
 
 function getColor(d) {
   if( d > 0 ) {
+    var alfa=i2a[d.toString()].alfa3;
     if ( metric == "inetPenetration" ) {
-      var alfa=i2a[d.toString()].alfa3;
       if (inet[alfa] != null){ 
         return(penColor(inet[alfa][year.toString()]));
       } else {
        return penColor(0);
       }
     } else if ( metric == "inetDensity" ) { 
+      if (inet[alfa] != null){ 
+        return(denColor((inet[alfa][year.toString()]/100)*pop[alfa][year.toString()]/area[alfa][year.toString()]));
+      } else {
+       return penColor(0);
+      }
     } else if ( metric == "popDensity" ) { 
-    } else {
+      if (pop[alfa] != null && area[alfa]){ 
+        return(denColor(pop[alfa][year.toString()]/area[alfa][year.toString()]));
+      } else {
+       return denColor(0);
+      }
       return "#000";
     }
   } else {
@@ -197,21 +206,19 @@ function tipOn(evt){
     var alfa=i2a[id.toString()].alfa3;
     if (inet[alfa] != null){
       d3.select(".data_name").text(inet[alfa].name);
-//      d3.select(".data_size").text(inet[id].Size);
-//      d3.select(".data_pop").text(inet[id].Population);
-//       d3.select(".data_users").text(inet[id].InternetUsers);
+      d3.select(".data_size").text(area[alfa][year.toString()]);
+      d3.select(".data_pop").text(pop[alfa][year.toString()]);
       d3.select(".data_pen").text(inet[alfa][year.toString()].toFixed(2));
-//       d3.select(".data_date").text(inet[id].DataDate);
+      d3.select(".data_users").text((pop[alfa][year.toString()]*inet[alfa][year.toString()]/100).toFixed(0));
     }
 }
 
 function tipOff(evt){
   d3.select(".data_name").text("World");
-  d3.select(".data_size").text("");
-  d3.select(".data_pop").text("");
-  d3.select(".data_users").text("");
+  d3.select(".data_size").text(area["WLD"][year.toString()]);
+  d3.select(".data_pop").text(pop["WLD"][year.toString()]);
   d3.select(".data_pen").text(inet["WLD"][year.toString()].toFixed(2));
-  d3.select(".data_date").text("");
+  d3.select(".data_users").text((pop["WLD"][year.toString()]*inet["WLD"][year.toString()]/100).toFixed(0));
 }
 
 updateMap()
